@@ -12,4 +12,15 @@ class LoginUser(models.Model):
     #black 针对表单 ，表示在表单字段中可以不用填，但针对数据可不影响
     class Meta:
         db_table="LoginUser"
+class Goods(models.Model):
+    goods_number = models.CharField(max_length=11)
+    goods_name = models.CharField(max_length=32)
+    goods_price = models.FloatField()
+    goods_count = models.IntegerField()
+    goods_location = models.CharField(max_length=254)
+    goods_safe_data = models.IntegerField()
+    goods_pro_time = models.DateField(auto_now=True,verbose_name='生产日期')
+    class Meta:
+        db_table = 'Goods'
+
 # Create your models here.

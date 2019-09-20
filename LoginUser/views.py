@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from .models import LoginUser
+from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from .models import *
 import hashlib
+import random
 def register(request):
     if request.method=="POST":
         error_msg=''
@@ -84,3 +85,31 @@ def logout(request):
         response.delete_cookie(one)
     del request.session['usrname']
     return response
+
+
+def base(request):
+
+    return render(request,'base.html')
+
+def add_goods(request):
+    goods_name = '冬瓜，苦瓜，乳瓜，黄瓜，丝瓜，佛手瓜，菜瓜，胡瓜，瓠瓜、菜瓜、西葫芦，番茄，茄子，芸豆，豇豆，豌豆，架豆，刀豆，扁豆，青豆，毛豆，蛇豆，玉米，玉米尖，蚕豆、菜豆、眉豆、四棱豆、蛇瓜，菌类：木耳，银耳，地耳，石耳，平菇，草菇，口蘑，猴头菇，金针菇，香菇，鸡腿菇，竹荪，凤尾菇，茶树菇，杏鲍菇，秀珍菇，猪肚菇，裙带菜瓜类：西瓜，美人瓜，甜瓜，香瓜，黄河蜜，哈密瓜，木瓜，乳瓜'
+    goods_name =goods_name.split("，")
+    goods_address = "北京市，天津市，上海市，重庆市，河北省，山西省，辽宁省，吉林省，黑龙江省，江苏省，浙江省，安徽省，福建省，江西省，山东省，河南省，湖北省，湖南省，广东省，海南省，四川省，贵州省，云南省，陕西省，甘肃省，青海省，台湾省，内蒙古自治区，广西壮族自治区，西藏自治区，宁夏回族自治区，新疆维吾尔自治区，香港特别行政区，澳门特别行政区"
+    goods_address = goods_address.split("，")
+    # print(goods_address)
+    for i,j in enumerate(range(100),1):
+        goods = Goods()
+        # print(goods)
+        # goods.goods_number = str(i).zfill(5)
+        # goods.goods_name = random.choice(goods_address) + random.choice(goods_name)
+        # goods.goods_price = random.random()*100
+        # goods.goods_count = random.randint(1,10)
+        # goods.goods_location = random.choice(goods_address)
+        # goods.goods_safe_data = random.randint(1,36)
+        # goods.save()
+    return HttpResponse('数据已添加')
+def goods_list(request):
+    goods_list = Goods.objects.all()
+    for one in goods_list:
+        print(one.goods_number)
+    return render(request,"goods_list.html",locals())

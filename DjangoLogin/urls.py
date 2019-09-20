@@ -22,4 +22,7 @@ urlpatterns = [
     path('login/',views.login),
     path('index/',views.index),
     path('forgot/',views.forgot),
+    path('base/',views.base),
+    path('add_goods/',views.add_goods),
+    path('goods_list/',views.goods_list),
 ]

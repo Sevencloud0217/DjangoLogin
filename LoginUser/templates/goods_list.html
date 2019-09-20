@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+ 商品列表
+{% endblock %}
+{% block label %}
+ 商品列表
+{% endblock %}
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th>商品编号</th>
+      <th>商品名称</th>
+      <th>商品价格</th>
+      <th>商品数量</th>
+      <th>商品产地</th>
+      <th>商品保质期</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+        {%  for one in goods_list %}
+   <tr>
+        <th>{{ one.goods_number }}</th>
+        <th>{{ one.goods_name }}</th>
+        <th>{{ one.goods_price }}</th>
+        <th>{{ one.goods_count }}</th>
+        <th>{{ one.goods_location }}</th>
+        <th>{{ one.goods_safe_date }}</th>
+        <th>
+        <button class="btn btn-primary">修改</button>
+        <button class="btn btn-warning">下架</button>
+       </th>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
