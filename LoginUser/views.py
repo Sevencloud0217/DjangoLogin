@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from .models import *
 import hashlib
+from django.core.paginator import Paginator
 import random
 def register(request):
     if request.method=="POST":
@@ -108,8 +109,77 @@ def add_goods(request):
         # goods.goods_safe_data = random.randint(1,36)
         # goods.save()
     return HttpResponse('数据已添加')
-def goods_list(request):
-    goods_list = Goods.objects.all()
-    for one in goods_list:
-        print(one.goods_number)
-    return render(request,"goods_list.html",locals())
+def goods_list(request,status,page=1):
+    #分页
+    page=int(page)
+    if status=="0":
+        goods_list = Goods.objects.filter(goods_status=0).order_by("goods_number")
+    else:
+        goods_list = Goods.objects.filter(goods_status=1).order_by("goods_number")
+    goods_list = Paginator(goods_list,10)
+    page=goods_list.page(page)
+
+
+    # return render(request,"goods_list.html",locals())
+    return  render(request,'vue_goods_list.html')
+def goods_status(request,status,id):
+    """
+    完成下架 修改status为0
+    完成上架 修改status为1
+
+    :param request:
+    :param status: 操作内容 上架
+    :param id: 商品 id
+    :return:
+    """
+    id= int(id)
+    goods=Goods.objects.get(id=id)
+    if status== 'up':
+        ###上架
+        goods.goods_status = 1
+    else:
+        #下架
+        goods.goods_status = 0
+    goods.save()
+    url =request.META.get("HTTP_REFERER",'/goods_list/1/1/')
+    return HttpResponseRedirect(url)
+def goods_list_api(request,status,page=1):
+    #分页
+    page=int(page)
+    if status=="0":
+        #下架商品
+        goods_list = Goods.objects.filter(goods_status=0).order_by("goods_number")
+    else:
+        # 在售商品
+        goods_list = Goods.objects.filter(goods_status=1).order_by("goods_number")
+    goods_list = Paginator(goods_list,10)
+    page=goods_list.page(page)
+
+    res=[]
+    for one in page:
+        res.append({
+            "goods_number":one.goods_number,
+            "goods_name":one.goods_name,
+            "goods_price":one.goods_price,
+            "goods_count":one.goods_count,
+            "goods_location":one.goods_location,
+            "goods_safe_data":one.goods_safe_data,
+            "goods_status":one.goods_status,
+            "goods_pro_time":one.goods_pro_time,
+
+        })
+    # return render(request,"goods_list.html",locals())
+    result={
+        "data":res,
+        "page_range":list(goods_list.page_range),
+    }
+    return JsonResponse(result)
+
+def api(request):
+
+    return render(request,'api.html')
+
+def vuedemo(request):
+
+    return render(request,"vuedemo.html")
+

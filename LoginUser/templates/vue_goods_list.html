@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}
+     商品列表
+{% endblock %}
+
+{% block css %}
+    <script src="/static/js/vue-resource.js"></script>
+    <script src="/static/js/vue.min.js"></script>
+{% endblock %}
+
+{% block label %}
+     商品列表
+{% endblock %}
+{% block content %}
+    {% verbatim %}
+    <div id="content">
+        <table class="table table-bordered dataTable">    
+            <thead>    
+            <tr>      
+                <th>商品编号</th>
+                      
+                <th>商品名称</th>
+                      
+                <th>商品价格</th>
+                     
+                <th>商品数量</th>
+                     
+                <th>商品产地</th>
+                      
+                <th>商品保质期</th>
+                      
+                <th>操作</th>
+                    
+            </tr>
+               
+            </thead>
+               
+            <tbody>  
+            <tr v-for="one in goods_list">
+                <td>{{ one.goods_number }}</td>
+                <td>{{ one.goods_name }}</td>
+                <td>{{ one.goods_price }}</td>
+                <td>{{ one.goods_count }}</td>
+                <td>{{ one.goods_location }}</td>
+                <td>{{ one.goods_safe_data }}</td>
+                <td>        
+                    <button class="btn btn-primary" style="padding-left:10px  ">修改</button>
+                            
+                    <button class="btn btn-warning">下架</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination" style="float:right; margin-right: 50px">
+            <li class="paginate_button page-item" v-for="page in page_range">
+                <a class="page-link" v-bind:href="page">{{ page }}</a>
+            </li>
+        </ul>
+    </div>
+    {% endverbatim %}
+{% endblock %}
+{% block js %}
+    <script>
+    Vue.use(VueResource)  //声明是有一个 VueResource
+        var vue = new Vue({
+            el: "#content",
+            data: {
+                goods_list: [
+                    {
+                        "goods_number": "00001",
+                        "goods_name": "山东煎饼",
+                        "goods_price": "22",
+                        "goods_count": "33",
+                        "goods_location": "保定",
+                        "goods_safe_data": "2",
+                    },
+                    {
+                        "goods_number": "00002",
+                        "goods_name": "山西臊子面",
+                        "goods_price": "19",
+                        "goods_count": "12",
+                        "goods_location": "承德",
+                        "goods_safe_data": "1",
+                    },
+                    {
+                        "goods_number": "00003",
+                        "goods_name": "保定驴肉火烧",
+                        "goods_price": "8",
+                        "goods_count": "64",
+                        "goods_location": "北京",
+                        "goods_safe_data": "3",
+                    },
+                    {
+                        "goods_number": "00004",
+                        "goods_name": "北京烤鸭",
+                        "goods_price": "22",
+                        "goods_count": "17",
+                        "goods_location": "云南",
+                        "goods_safe_data": "1",
+                    },
+                    {
+                        "goods_number": "00005",
+                        "goods_name": "东北烤红薯",
+                        "goods_price": "22",
+                        "goods_count": "17",
+                        "goods_location": "邯郸",
+                        "goods_safe_data": "1",
+                    },
+
+                ],
+                page_range: [1, 2, 3, 4,5],
+            },
+            created:function () {
+
+                url="/goods_list_api/1/1",
+                this.$http.get(url).then(
+                    function (data) {
+                        console.log(data["data"]["data"]);
+                        this.goods_list =data["data"]["data"];
+                        this.page_range = data["data"]["page_range"];
+                    },
+                    function (err) {
+                        console.log(err)
+
+                    }
+                )
+            }
+        })
+    </script>
+
+{% endblock %}

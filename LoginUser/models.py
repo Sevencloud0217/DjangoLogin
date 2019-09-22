@@ -19,6 +19,8 @@ class Goods(models.Model):
     goods_count = models.IntegerField()
     goods_location = models.CharField(max_length=254)
     goods_safe_data = models.IntegerField()
+    #下架
+    goods_status = models.IntegerField()
     goods_pro_time = models.DateField(auto_now=True,verbose_name='生产日期')
     class Meta:
         db_table = 'Goods'
