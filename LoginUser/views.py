@@ -100,14 +100,14 @@ def add_goods(request):
     # print(goods_address)
     for i,j in enumerate(range(100),1):
         goods = Goods()
-        # print(goods)
-        # goods.goods_number = str(i).zfill(5)
-        # goods.goods_name = random.choice(goods_address) + random.choice(goods_name)
-        # goods.goods_price = random.random()*100
-        # goods.goods_count = random.randint(1,10)
-        # goods.goods_location = random.choice(goods_address)
-        # goods.goods_safe_data = random.randint(1,36)
-        # goods.save()
+        print(goods)
+        goods.goods_number = str(i).zfill(5)
+        goods.goods_name = random.choice(goods_address) + random.choice(goods_name)
+        goods.goods_price = random.random()*100
+        goods.goods_count = random.randint(1,10)
+        goods.goods_location = random.choice(goods_address)
+        goods.goods_safe_data = random.randint(1,36)
+        goods.save()
     return HttpResponse('数据已添加')
 def goods_list(request,status,page=1):
     #分页
