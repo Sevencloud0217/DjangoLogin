@@ -89,7 +89,7 @@ def logout(request):
 
 
 def base(request):
-
+    res=1
     return render(request,'base.html')
 
 def add_goods(request):
