@@ -54,7 +54,7 @@
         </table>
         <ul class="pagination" style="float:right; margin-right: 50px">
             <li class="paginate_button page-item" v-for="page in page_range">
-                <a class="page-link" v-bind:href="page">{{ page }}</a>
+                <a class="page-link" v-on:click="getgoods(page)">{{ page }}</a>
             </li>
         </ul>
     </div>
@@ -125,6 +125,22 @@
 
                     }
                 )
+            },
+            methods:{
+                getgoods:function (page) {
+                   url="/goods_list_api/1/"+page,
+                this.$http.get(url).then(
+                    function (data) {
+                        console.log(data["data"]["data"]);
+                        this.goods_list =data["data"]["data"];
+                        this.page_range = data["data"]["page_range"];
+                    },
+                    function (err) {
+                        console.log(err)
+
+                    }
+                )
+                }
             }
         })
     </script>
